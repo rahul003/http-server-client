@@ -1,6 +1,0 @@
-typeof tdwfbCheckDate === 'function' && tdwfbCheckDate({
-  "days": -6,
-  "thedaywefightback": false,
-  "est": "2014-02-18T00:12:19.477Z",
-  "utc": "2014-02-18T05:12:19.477Z"
-});
