@@ -1,0 +1,73 @@
+Problem 3 : HTTP Server and Client
+
+The HTTP Client :
+
+Your client should take command line arguments specifying a server name or IP address, the port on which to contact the server, the method you use, and the path of the requested object on the server. You are going to implement two methods of HTTP: GET and PUT.
+
+• GET
+
+The format of the command line is
+             myclient host port_number GET filename
+
+The basic client action should proceed as follows:
+
+1. Connect to the server via a connection-orieted socket.
+
+2. Submit a valid HTTP/1.0 GET request for the supplied URL. 
+GET /index.html HTTP/1.0 
+
+3. Read (from the socket) the server's response and display it as program output. 
+
+Once you have this part of the client working, you should demonstrate it with the following two test cases:
+
+4. Use it to get a file of your choosing from a "real" web server on the internet. For example, 
+         myclient www.cnn.com 80 GET index.html
+
+5. Use it to get a file from your own server program. For example, your server is running on pc1.cs.uml.edu, port number 5678. 
+
+myclient pc1.cs.uml.edu 5678 GET index.html
+
+This command would result in an HTTP GET request to pc1.cs.uml.edu. for index.html on port 5678, and get the file index.html back to the client.
+
+
+
+
+• PUT
+
+The format of the command line is
+
+                 myclient host port_number PUT filename
+
+The basic client action should proceed as follows:
+
+1. Connect to the server via a connection-orieted socket.
+
+2. Submit a PUT request for the supplied file:
+PUT filename
+
+(Once your server program receives such a request, it should expect to receive the file and save it to disk.)
+
+3. Send the file to the server.
+
+4. Wait for server's reply.
+
+Once you have this part of the client working, you should test it with your own server: send out a file to your server, the server should save the file and sends back a response.
+
+
+The HTTP Server:
+
+Your server should take command line arguments specifying a port number. For example,
+
+myserver 5678
+
+The basic server action should proceed as follows
+
+1. Initialize the server.
+
+2. Wait for a client connection on the port number specified by command line argument.
+
+3. When a client connection is accepted, read the HTTP request.
+
+4. Construct a valid HTTP response including status line, any headers you feel are appropriate, and, of course, the requested file in the response body. For GET , if the server receives the "GET index.html HTTP/1.0" request, it sends out "200 OK" to the client, followed by the file index.html. If the requested file doesn't exist, the server sends out "404 Not Found" response to the client. For PUT , if the server receives the "PUT test.txt" request, it will save the file as test.txt. If the received file from client is successfully created, the server sends back a "200 OK File Created" response to the client.
+
+5. Close the client connection and loop back to wait for the next client connection to arrive. Notice that your server will be structured around an infinite loop. That means that you must interrupt your server with a termination signal to stop it. Make sure your server code shuts down gracefully when terminated. That means closing any open sockets, freeing allocated memory, etc. 
