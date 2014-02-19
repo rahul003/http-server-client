@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 			perror("client: socket");
 			continue;
 		}
-
+		int bindfd = bind(sockfd, p->ai_addr, p->ai_addrlen);
 		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
 			close(sockfd);
 			perror("client: connect");
@@ -79,12 +79,13 @@ int main(int argc, char *argv[])
 	}
 
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
-			s, sizeof s);
+	 		s, sizeof s);
 	printf("client: connecting to %s\n", s);
 
 	freeaddrinfo(servinfo); // all done with this structure
 
-
+	int optval = 1; //is 
+         setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
 
 
 	if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
@@ -101,14 +102,15 @@ int main(int argc, char *argv[])
 
     bzero(buf,MAXDATASIZE);
 
-    buf=strcat(buf,argv[3]);
-    buf=strcat(buf," /");
+    //buf=strcat(buf,argv[3]);
+    //buf=strcat(buf," /");
     char * filename = argv[4];
-    buf=strcat(buf,argv[4]);
+    //buf=strcat(buf,argv[4]);
     FILE* fp;
     if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
     {	
-    	buf=strcat(buf," HTTP/1.0");
+    	//buf=strcat(buf," HTTP/1.0");
+    	sprintf(buf, "GET /%s HTTP/1.0\n\n",argv[4]);
 	    n = write(sockfd,buf,MAXDATASIZE);
 		if (n < 0) 
 			fprintf(stderr, "ERROR writing to socket\n");
