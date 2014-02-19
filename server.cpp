@@ -146,7 +146,8 @@ int main(void)
 
         	if(!strcmp(request,"GET"))
 		     {
-		     	ifstream in(filename, ios::in | ios::binary);
+
+		     	ifstream in(filename+1, ios::in | ios::binary);
 		     	if(in.fail())
 		     	{
 				send(new_fd, http_notfound, strlen(http_notfound), 0); //send HTTP 404 Not Found if the file does not exist
@@ -179,6 +180,37 @@ int main(void)
 		  			//cout<<"wrote"<<temp<<endl;
 				}	
         	}
+
+
+        	if(!strcmp(request,"PUT") || !strcmp(request,"put") )
+		    {	
+		    	ofstream out(filename, ios::out | ios::binary);
+		     	if(out.fail())
+		     	{
+				send(new_fd, http_notfound, strlen(http_notfound), 0); //send HTTP 404 Not Found if the file does not exist
+			    } 
+		    	//buf=strcat(buf," HTTP/1.0");
+			    n = write(sockfd,buf,MAXDATASIZE);
+				if (n < 0) 
+					fprintf(stderr, "ERROR writing to socket\n");
+		   	 	
+				ofstream myfile (filename, ios::out | ios::binary);
+		   	 	int temp=0;
+		   	 	int len;
+				while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
+				{	
+					temp++;
+		   	 		myfile.write(buf,len);
+		   	 		bzero(buf,MAXDATASIZE);	
+		   	 		myfile.close();
+		   	 		myfile.open (filename, ios::app | ios::binary);
+				}
+
+		   	 	myfile.close();
+		    	if (n < 0) 
+		         fprintf(stderr, "finish reading from socket\n");
+		    	
+		   }
         	
 			close(new_fd);
 			exit(0);

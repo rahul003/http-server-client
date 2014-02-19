@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     bzero(buf,MAXDATASIZE);
 
     buf=strcat(buf,argv[3]);
-    buf=strcat(buf," ");
+    buf=strcat(buf," /");
     char * filename = argv[4];
     buf=strcat(buf,argv[4]);
     FILE* fp;
@@ -119,9 +119,7 @@ int main(int argc, char *argv[])
 		while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
 		{	
 			temp++;
-			//cout<<len;
    	 		myfile.write(buf,len);
-   	 		//cout<<buf;
    	 		bzero(buf,MAXDATASIZE);	
    	 		myfile.close();
    	 		myfile.open (filename, ios::app | ios::binary);
@@ -132,6 +130,34 @@ int main(int argc, char *argv[])
          fprintf(stderr, "finish reading from socket\n");
     	
    }
+
+   if(!strcmp(argv[3],"PUT") || !strcmp(argv[3],"put") )
+    {	
+    	buf=strcat(buf," HTTP/1.0");
+    	n = write(sockfd,buf,MAXDATASIZE);
+		if (n < 0) 
+			fprintf(stderr, "ERROR writing to socket\n");
+
+		ifstream in (filename, ios::in | ios::binary);
+   	 	int temp=0;
+		in.read(buf,MAXDATASIZE);
+		int len=in.gcount();
+		while(len>0)
+		{
+			temp++;
+			send(sockfd, buf, len, 0);
+			in.read(buf,MAXDATASIZE);
+			len=in.gcount();
+		}
+   	 	in.close();
+    	if (n < 0) 
+         fprintf(stderr, "finish reading from socket\n");
+
+     	
+    	
+   }
+
+
     printf("sent");
 
 	close(sockfd);
