@@ -1,7 +1,3 @@
-#include <cstring>
-#include <iostream>
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -14,13 +10,15 @@
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <iostream>
 #include <fstream>
 
 #define PORT "9999"  // the port users will be connecting to
 
 #define BACKLOG 10	 // how many pending connections queue will hold
 #define MAXDATASIZE 100
-
+#define http_notfound "notfound"
+#define http_ok "ok"
 using namespace std;
 
 void error(char *msg)
@@ -139,18 +137,48 @@ int main(void)
      		 if (n < 0) 
         		 error("ERROR reading from socket");
         	
-        	string tokens = strtok (buf,"\n");
-        	cout<<tokens<<endl;
+        	char * tokens = strtok (buf,"\n");
+        	printf("%s",tokens);
 	   		
-        	string request = strtok (buf," ");
-        	string filename = strtok (NULL," ");
-        	cout<<request<<endl<<filename<<endl;
-        	if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
-        	{
+        	char * request = strtok (buf," ");
+        	char * filename = strtok (NULL," ");
+        	printf("%s %s",request,filename);
 
+        	if(!strcmp(request,"GET"))
+		     {
+		     	ifstream in(filename, ios::in | ios::binary);
+		     	if(in.fail())
+		     	{
+				send(new_fd, http_notfound, strlen(http_notfound), 0); //send HTTP 404 Not Found if the file does not exist
+			    } 
+
+			    else {
+				//send(new_fd, http_ok, strlen(http_ok), 0); // if found send HTTP 200 OK  
+				//send(fd, header, strlen(header), 0); // send the header
+				cout<<endl<<"Sent ok"<<endl;
+
+				int temp=0;
+				in.read(buf,MAXDATASIZE);
+				int len=in.gcount();
+				while(len>0)
+				{
+					temp++;
+					send(new_fd, buf, len, 0);
+					in.read(buf,MAXDATASIZE);
+					len=in.gcount();
+				}
+
+		  			// while ( len = in.read(buf,MAXDATASIZE).gcount() > 0)
+		  			// { //sends the content of the file
+		  			// 	cout<<len;
+		  			// 	
+		  			// 	cout<<"ASda";
+		  			// 	cout<<buf;
+				  	//  	send(new_fd, buf, len, 0);
+		  			// }
+		  			//cout<<"wrote"<<temp<<endl;
+				}	
         	}
-        	//string request = strtok (buf," ");
-	   		//printf("%s\n",buf);
         	
 			close(new_fd);
 			exit(0);
