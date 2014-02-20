@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
 
     bzero(buf,MAXDATASIZE);
     char * filename = argv[4];
-    FILE* fp;
+   
 
     if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
-    {	
-    	sprintf(buf, "GET /%s HTTP/1.0\n\n",argv[4]);
+    {	char * request;
+    	sprintf(buf, "GET /%s HTTP/1.1\r\nHost: %s\r\nAccept-Encoding:gzip,deflate,sdch\r\n\r\n",argv[4],argv[2]);
 	    n = write(sockfd,buf,MAXDATASIZE);
 		if (n < 0) 
 			fprintf(stderr, "ERROR writing to socket\n");
@@ -109,19 +109,22 @@ int main(int argc, char *argv[])
 
    if(!strcmp(argv[3],"PUT") || !strcmp(argv[3],"put") )
     {	
-    	buf=strcat(buf," HTTP/1.0");
-    	n = write(sockfd,buf,MAXDATASIZE);
+    	char* request = (char*) calloc(35, sizeof(char));
+    	sprintf(request, "PUT /%s HTTP/1.1\r\n\r\n",argv[4]);
+    	n = write(sockfd,request,MAXDATASIZE);
 		if (n < 0) 
 			fprintf(stderr, "ERROR writing to socket\n");
 
-		ifstream in (filename, ios::in | ios::binary);
+		ifstream in (filename, ios::in);
    	 	int temp=0;
 		in.read(buf,MAXDATASIZE);
 		int len=in.gcount();
 		while(len>0)
 		{
 			temp++;
-			send(sockfd, buf, len, 0);
+			cout<<buf<<endl;
+			cout<<send(sockfd, buf, len, 0)<<endl;
+			bzero(buf,MAXDATASIZE);	
 			in.read(buf,MAXDATASIZE);
 			len=in.gcount();
 		}
@@ -132,9 +135,6 @@ int main(int argc, char *argv[])
      	
     	
    }
-
-
-    printf("sent");
 
 	close(sockfd);
 

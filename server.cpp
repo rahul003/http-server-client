@@ -125,36 +125,35 @@ int main(void)
 			get_in_addr((struct sockaddr *)&their_addr),
 			s, sizeof s);
 		printf("server: got connection from %s\n", s);
-
+		printf("forke1d\n");
 		if (!fork()) { // this is the child process
 			close(sockfd); // child doesn't need the listener
-
-			//if (send(new_fd, "Hello, world!", 13, 0) == -1)
-				//perror("send");
-
+			cout<<"forked"<<endl;
 			bzero(buf,MAXDATASIZE);
      		n = read(new_fd,buf,MAXDATASIZE);
      		 if (n < 0) 
         		 error("ERROR reading from socket");
-        	
+        	cout<<buf<<endl;
         	char * tokens = strtok (buf,"\n");
         	printf("%s",tokens);
 	   		
         	char * request = strtok (buf," ");
         	char * filename = strtok (NULL," ");
+        	filename++;
         	printf("%s %s",request,filename);
 
         	if(!strcmp(request,"GET"))
 		     {
 
-		     	ifstream in(filename+1, ios::in | ios::binary);
+		     	ifstream in(filename, ios::in | ios::binary);
 		     	if(in.fail())
 		     	{
+		     	cout<<http_notfound;
 				send(new_fd, http_notfound, strlen(http_notfound), 0); //send HTTP 404 Not Found if the file does not exist
 			    } 
 
 			    else {
-				//send(new_fd, http_ok, strlen(http_ok), 0); // if found send HTTP 200 OK  
+				send(new_fd, http_ok, strlen(http_ok), 0); // if found send HTTP 200 OK  
 				//send(fd, header, strlen(header), 0); // send the header
 				cout<<endl<<"Sent ok"<<endl;
 
@@ -183,33 +182,23 @@ int main(void)
 
 
         	if(!strcmp(request,"PUT") || !strcmp(request,"put") )
-		    {	
-		    	ofstream out(filename, ios::out | ios::binary);
-		     	if(out.fail())
-		     	{
-				send(new_fd, http_notfound, strlen(http_notfound), 0); //send HTTP 404 Not Found if the file does not exist
-			    } 
-		    	//buf=strcat(buf," HTTP/1.0");
-			    n = write(sockfd,buf,MAXDATASIZE);
-				if (n < 0) 
-					fprintf(stderr, "ERROR writing to socket\n");
-		   	 	
+		    {	cout<<"puit";
 				ofstream myfile (filename, ios::out | ios::binary);
 		   	 	int temp=0;
 		   	 	int len;
+		   	 	bzero(buf,MAXDATASIZE);	
 				while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
-				{	
+				{	cout<<len;
 					temp++;
+					cout<<temp;
 		   	 		myfile.write(buf,len);
 		   	 		bzero(buf,MAXDATASIZE);	
-		   	 		myfile.close();
-		   	 		myfile.open (filename, ios::app | ios::binary);
 				}
-
+				cout<<len;
+				n = write(new_fd,"200 OK File Created\n",strlen("200 OK FIle Created\n"));
 		   	 	myfile.close();
-		    	if (n < 0) 
-		         fprintf(stderr, "finish reading from socket\n");
-		    	
+		    	//if (n < 0) 
+		         //fprintf(stderr, "finish reading from socket\n");
 		   }
         	
 			close(new_fd);
