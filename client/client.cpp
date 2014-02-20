@@ -30,16 +30,14 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-bool is_file_binary(char * filename)
+bool is_file_binary(char * filepath)
 {
-    string file = filename;
+    string file = filepath;
     string extension = file.substr(file.find_last_of(".")+1);
     if(	extension=="png" || extension=="gif" || extension=="jpg"|| extension=="pdf"|| extension=="jpeg")
-		{
-
-			cout<<"true";return true;}
+		{return true;}
 	else
-		{cout<<"false"<<endl;return false;}
+		{return false;}
 }
 
 int main(int argc, char *argv[])
@@ -52,7 +50,7 @@ int main(int argc, char *argv[])
  	int n;
 
 	if (argc != 5) {
-	    fprintf(stderr,"usage: client hostname port requesttype filename\n");
+	    fprintf(stderr,"usage: client hostname port requesttype filepath\n");
 	    exit(1);
 	}
 
@@ -95,11 +93,15 @@ int main(int argc, char *argv[])
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
     freeaddrinfo(servinfo); // all done with this structure
     bzero(buf,MAXDATASIZE);
-    char * filename = argv[4];
-   
+    char * filepath = argv[4];
+   	cout<<"Request is: "<<argv[3]<<endl;
+   	cout<<"Path is: "<<argv[4]<<endl;
 
     if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
-    {	char * request;
+    {	
+
+
+    	char * request;
     	sprintf(buf, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n",argv[4],argv[2]);
 	    n = write(sockfd,buf,MAXDATASIZE);
 		if (n < 0) 
@@ -107,7 +109,9 @@ int main(int argc, char *argv[])
    	 	
 
    	 	char  statusheader[MAXDATASIZE];
+   	 	bzero(statusheader,MAXDATASIZE);	
    	 	n = read(sockfd,statusheader, 15);
+   	 	//cout<<"status header is: "<<statusheader<<endl;
 		if (n < 0)
 			printf("ERROR reading from socket");
 
@@ -116,11 +120,22 @@ int main(int argc, char *argv[])
 		 	printf("404 NOT FOUND");
 		}
 		else
-			printf("\n%s",statusheader);
+			printf("Status is: %s\n",statusheader);
 
 		if(strcmp(statusheader, "HTTP/1.1 200 OK")==0)	
 		{
-			ofstream myfile (filename, ios::out | ios::binary);
+				char * file;
+				if(strstr(filepath,"/")!=NULL)
+				{
+					char * file =  strrchr(filepath, '/');
+					file++;
+				}
+
+				else{
+					file = filepath;
+				}
+
+			ofstream myfile (file, ios::out | ios::binary);
 	   	 	int len;
 	   	 	len = read(sockfd,buf,MAXDATASIZE);
 
@@ -128,17 +143,18 @@ int main(int argc, char *argv[])
 			{	
 	   	 		myfile.write(buf,len);
 	   	 		bzero(buf,1);	
-	   	 		//len = read(sockfd,buf,1);
+	   	 		
 			}
 	   	 	myfile.close();
+	   	 	cout<<"File received"<<endl;
     	}
    }
 
    if(!strcmp(argv[3],"PUT") || !strcmp(argv[3],"put") )
     {	
-  char getRequest[1024];
+  		char getRequest[1024];
 		if(strcmp(argv[3],"PUT")==0)
-			sprintf(getRequest, "PUT /%s HTTP/1.0\r\nhost: %s\r\n\r\n",argv[4],argv[1]);//sprintf(getRequest, "GET / HTTP/1.0\nHOST: %s\n\n", argv[1]); // create a get request only for the IP
+			sprintf(getRequest, "PUT /%s HTTP/1.1\r\nhost: %s\r\n\r\n",argv[4],argv[1]);//sprintf(getRequest, "GET / HTTP/1.0\nHOST: %s\n\n", argv[1]); // create a get request only for the IP
 
 		else
 			{cout<<"Invalid request";
@@ -147,17 +163,27 @@ int main(int argc, char *argv[])
 
 
     	int sent=send(sockfd,getRequest, strlen(getRequest),0);
-		cout<<sent;
-		cout<<"sent "<<strlen(getRequest)<<" ";
 
-    	cout<<"inside put"<<endl;
-    	if(is_file_binary(filename))
+    	if(is_file_binary(filepath))
     	{
     		//char * sendingbuf = (char*) calloc(1, sizeof(char));
     		char sendingchar[MAXDATASIZE];
 
+
+    		char * file;
+				if(strstr(filepath,"/")!=NULL)
+				{
+					char * file =  strrchr(filepath, '/');
+					file++;
+				}
+
+				else{
+					file = filepath;
+				}
+
+
 			ifstream myfile;
-			myfile.open(filename,ios::in | ios::binary);
+			myfile.open(file,ios::in | ios::binary);
 			while( numbytes = myfile.read(sendingchar,1) > 0)
 			{
 				n= send(sockfd, sendingchar, 1, 0);
@@ -172,14 +198,16 @@ int main(int argc, char *argv[])
     
     		FILE *fp;
 			char sendingchar;
-			fp = fopen(filename,"r");
+
+
+			fp = fopen(filepath,"r");
 			
 			if(fp)
 			{
 				//cout<<"withing file writing"<<endl;
 				do{
 					sendingchar = fgetc(fp);
-					cout<<sendingchar;
+				
 					if(sendingchar!=EOF)
 						n = write(sockfd, &sendingchar, 1);
 					//cout<<n;
@@ -193,6 +221,7 @@ int main(int argc, char *argv[])
 			{
 				printf("File not found\n");
 			}
+			cout<<"200 OK File Created"<<endl;
     	}
 
    }

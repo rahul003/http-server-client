@@ -13,12 +13,11 @@
 #include <iostream>
 #include <fstream>
 
-#define PORT "9999"  // the port users will be connecting to
-
 #define BACKLOG 10	 // how many pending connections queue will hold
 #define MAXDATASIZE 100
-#define http_notfound "notfound"
-#define http_ok "ok"
+#define http_notfound "HTTP/1.1 404 NO"
+#define http_ok "HTTP/1.1 200 OK"
+
 using namespace std;
 
 void error(char *msg)
@@ -43,9 +42,9 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+
 int recv_request(int newsockfd, char *buffer)			//Recv_request to read the incoming request character by character in a buffer
 {
-	cout<<" hi enterin";
 	int end, n;
 	end = 0;
 	char input;
@@ -93,7 +92,7 @@ int recv_request(int newsockfd, char *buffer)			//Recv_request to read the incom
 	buffer[pos] = '\0';
 	return 1;
 }
-int main(void)
+int main(int argc, char **argv)
 {
 	int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
 	struct addrinfo hints, *servinfo, *p;
@@ -106,14 +105,36 @@ int main(void)
 	char s[INET6_ADDRSTRLEN];
 	int rv;
 
-	int looper;
+	char port[6];
+	
 
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE; // use my IP
 
-	if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) {
+
+
+	if (argc == 1) {
+	    cout<<"As port not specified, a default port of 7777 is being used. Custom port can be given as: ./server port"<<endl;
+	    sprintf(port, "7777");
+	}
+
+
+	else if (argc == 2) {
+	    cout<<"Port "<<argv[1]<<" is being used"<<endl;
+	     strcpy (port,argv[1]);
+	}
+
+	else{
+	    fprintf(stderr,"usage: server port\n");
+	    exit(1);
+	}
+
+
+
+
+	if ((rv = getaddrinfo(NULL, port, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
 		return 1;
 	}
@@ -178,7 +199,6 @@ int main(void)
 		printf("forke1d\n");
 		if (!fork()) { // this is the child process
 			close(sockfd); // child doesn't need the listener
-			cout<<"forked"<<endl;
 			bzero(buf,MAXDATASIZE);
  
 			n = recv_request(new_fd,buf);
@@ -199,6 +219,10 @@ int main(void)
 
         	if(!strcmp(request,"GET"))
 		     {
+
+		     	//char * file =  strrchr(filename, '/');
+		     	//cout<<file;
+		     	cout<<"filename is:"<<filename<<endl;
 
 		     	ifstream in(filename, ios::in | ios::binary);
 		     	if(in.fail())
@@ -223,37 +247,45 @@ int main(void)
 					len=in.gcount();
 				}
 
-		  			// while ( len = in.read(buf,MAXDATASIZE).gcount() > 0)
-		  			// { //sends the content of the file
-		  			// 	cout<<len;
-		  			// 	
-		  			// 	cout<<"ASda";
-		  			// 	cout<<buf;
-				  	//  	send(new_fd, buf, len, 0);
-		  			// }
-		  			//cout<<"wrote"<<temp<<endl;
+				n = write(new_fd,"200 OK File Received\n",strlen("200 OK FIle Created\n"));
 				}	
         	}
 
 
         	if(!strcmp(request,"PUT") || !strcmp(request,"put") )
 		    {	//cout<<"put"<<endl;
-				ofstream myfile (filename, ios::out | ios::binary);
+
+				char * file;
+				if(strstr(filename,"/")!=NULL)
+				{
+					file =  strrchr(filename, '/');
+					file++;
+				}
+
+				else{
+					file = filename;
+					}
+
+				ofstream myfile (file, ios::out | ios::binary);
+
+				if(myfile.fail())
+				{
+					cout<<"Could not access path"<<endl;
+				}
+
+
 		   	 	int temp=0;
 		   	 	int len;
 		   	 	bzero(buf,MAXDATASIZE);	
 				while( (len = read(new_fd,buf,MAXDATASIZE) )>0)
-				{	//cout<<len;
+				{	
 					temp++;
-					cout<<temp;
 		   	 		myfile.write(buf,len);
 		   	 		bzero(buf,MAXDATASIZE);	
 				}
-				//cout<<"lenght is"<<len;
+				
 				n = write(new_fd,"200 OK File Created\n",strlen("200 OK FIle Created\n"));
 		   	 	myfile.close();
-		    	//if (n < 0) 
-		         //fprintf(stderr, "finish reading from socket\n");
 		   }
         	
 			close(new_fd);

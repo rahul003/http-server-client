@@ -1,6 +1,4 @@
-// @name      The Fade Anything Technique
-// @namespace http://www.axentric.com/aside/fat/
-// @version   1.0-RC1
+
 // @author    Adam Michela
 
 var Fat = {
@@ -55,36 +53,4 @@ var Fat = {
       b = Math.floor(bf * ((frames-frame)/frames) + bt * (frame/frames));
       h = this.make_hex(r,g,b);
     
-      setTimeout("Fat.set_bgcolor('"+id+"','"+h+"')", delay);
-
-      frame++;
-      delay = interval * frame; 
-    }
-    setTimeout("Fat.set_bgcolor('"+id+"','"+to+"')", delay);
-  },
-  set_bgcolor : function (id, c)
-  {
-    var o = document.getElementById(id);
-    o.style.backgroundColor = c;
-  },
-  get_bgcolor : function (id)
-  {
-    var o = document.getElementById(id);
-    while(o)
-    {
-      var c;
-      if (window.getComputedStyle) c = window.getComputedStyle(o,null).getPropertyValue("background-color");
-      if (o.currentStyle) c = o.currentStyle.backgroundColor;
-      if ((c != "" && c != "transparent") || o.tagName == "BODY") { break; }
-      o = o.parentNode;
-    }
-    if (c == undefined || c == "" || c == "transparent") c = "#FFFFFF";
-    var rgb = c.match(/rgb\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/);
-    if (rgb) c = this.make_hex(parseInt(rgb[1]),parseInt(rgb[2]),parseInt(rgb[3]));
-    return c;
-  }
-}
-
-//window.onload = function () 
-//  {
-//  F
+      setTimeout("Fat.set_bgcolor('"+id+"','"+h+"')", dela
