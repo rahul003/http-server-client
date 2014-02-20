@@ -1,5 +1,6 @@
 /*
-** client.c -- a stream socket client demo
+** client.c -- a client to connect to http servers
+Supports GET/PUT requests.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,20 +11,19 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-
 #include <arpa/inet.h>
 #include <iostream>
 #include <cstring>
 #include <fstream>
-// #define PORT "9999" // the port client will be connecting to 
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
-
 using namespace std;
+
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
 {
-	if (sa->sa_family == AF_INET) {
+	if (sa->sa_family == AF_INET) 
+	{
 		return &(((struct sockaddr_in*)sa)->sin_addr);
 	}
 
@@ -37,15 +37,12 @@ int main(int argc, char *argv[])
 	struct addrinfo hints, *servinfo, *p;
 	int rv;
 	char s[INET6_ADDRSTRLEN];
- 	
  	int n;
 
 	if (argc != 5) {
 	    fprintf(stderr,"usage: client hostname port requesttype filename\n");
 	    exit(1);
 	}
-
-	
 
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC;
@@ -58,13 +55,13 @@ int main(int argc, char *argv[])
 
 	// loop through all the results and connect to the first we can
 	for(p = servinfo; p != NULL; p = p->ai_next) {
-		if ((sockfd = socket(p->ai_family, p->ai_socktype,
-				p->ai_protocol)) == -1) {
+		if ((sockfd = socket(p->ai_family, p->ai_socktype,p->ai_protocol)) == -1) {
 			perror("client: socket");
 			continue;
 		}
 		int bindfd = bind(sockfd, p->ai_addr, p->ai_addrlen);
-		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) 
+		{
 			close(sockfd);
 			perror("client: connect");
 			continue;
@@ -78,55 +75,32 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 
-	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
-	 		s, sizeof s);
+	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),s, sizeof s);
 	printf("client: connecting to %s\n", s);
 
 	freeaddrinfo(servinfo); // all done with this structure
 
 	int optval = 1; //is 
-         setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
-
-
-	if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-	    perror("recv");
-	    exit(1);
-	}
-	buf[numbytes] = '\0';
-
-	printf("client: received '%s'\n",buf);
-
-
-
-	//printf("Please enter the message: ");
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
 
     bzero(buf,MAXDATASIZE);
-
-    //buf=strcat(buf,argv[3]);
-    //buf=strcat(buf," /");
     char * filename = argv[4];
-    //buf=strcat(buf,argv[4]);
     FILE* fp;
+
     if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
     {	
-    	//buf=strcat(buf," HTTP/1.0");
     	sprintf(buf, "GET /%s HTTP/1.0\n\n",argv[4]);
 	    n = write(sockfd,buf,MAXDATASIZE);
 		if (n < 0) 
 			fprintf(stderr, "ERROR writing to socket\n");
    	 	
 		ofstream myfile (filename, ios::out | ios::binary);
-   	 	int temp=0;
    	 	int len;
 		while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
 		{	
-			temp++;
    	 		myfile.write(buf,len);
    	 		bzero(buf,MAXDATASIZE);	
-   	 		myfile.close();
-   	 		myfile.open (filename, ios::app | ios::binary);
 		}
-
    	 	myfile.close();
     	if (n < 0) 
          fprintf(stderr, "finish reading from socket\n");

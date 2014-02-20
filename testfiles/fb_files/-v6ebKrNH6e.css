@@ -1,0 +1,181 @@
+/*!CK:2489038052!*//*1392693975,178127439*/
+
+.fbBirthdayList .fbBirthdayReply{height:16px;width:80%}
+.fbCalendar{background:#e9eaed}
+.fbCalendar.fbGroupCalendar{background:#fff}
+.fbCalendar, .fbCalendar #contentCol{padding-top:0}
+.fbCalendar #contentArea{margin-left:-1px;width:984px}
+#fbCalendarWrapper{background-color:#fff;border:1px solid #c4cde0;-webkit-border-radius:0 0 2px 2px;border-top:none;-webkit-box-shadow:0 1px 1px rgba(0, 0, 0, .07);margin-bottom:40px;position:relative;width:981px}
+.fbCalendar .fbCalendarSectionHeader{height:15px}
+.fbCalendarSectionHeader .fbCalendarSectionHeaderLink{display:none}
+.fbCalendarSectionHeader:hover .fbCalendarSectionHeaderLink{display:block}
+.fbCalendar .fbCalendarAds .ego_column{width:255px}
+.fbCalendar #pageFooter{display:none}
+.fbCalendarSpecialEventLabel{text-transform:uppercase}
+.fbCalendar .fbCalendarBox{width:981px}
+.fbCalendar .fbCalendarBoxHeader{margin:0 10px 0 20px}
+.fbCalendar .fbCalendarBoxHeaderLink{padding:4px 12px 0 0}
+#pagelet_calendar_header{height:50px}
+.fbCalendar .fbCalendarHeader{background-color:#fff;border:solid #c4cde0;border-width:0 1px;padding:11px 19px 0;width:943px;z-index:2}
+.fbCalendar #headerArea{margin:0;padding:0}
+.fbCalendarHeader .fbCalendarHeaderInner{padding:0 3px 0 0}
+.fbCalendarHeader .fbCalendarHeaderBorder{background-color:#c4cde0;-webkit-box-shadow:0 0 1px rgba(0, 0, 0, .07);color:#c4cde0;left:1px;margin:11px 0 0;position:relative;width:939px}
+.fbCalendarHeader .uiHeaderActions{margin-top:0}
+.fbCalendarMonthWrapper{width:259px;position:relative;right:2px}
+.fbCalendarMonth{margin-left:2px}
+.fbCalendarMonth .fbCalendarArrows{float:right;position:relative;top:5px;right:5px}
+.fbCalendarMonth .fbCalendarDayHeader{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:26px}
+.fbCalendarMonth .fbCalendarMonthGrid{margin:10px auto}
+.fbCalendarMonth .fbCalendarDay{padding:2px 5px}
+.fbCalendarMonth a{text-decoration:none}
+.fbCalendarMonth a:hover{color:#3b5998;background-color:#edeff4}
+.fbCalendarMonth .fbCalendarToday{color:#fff;background-color:#3b5998}
+.uiComposer{border-bottom:1px solid #ccc}
+.uiComposerTopBorder{border-top:1px solid #ccc}
+.uiComposerOpen, .no_js .uiComposer{border-bottom:none}
+.uiComposer .attachmentLoader{line-height:normal;position:absolute;right:2px;top:9px}
+.uiComposer .attachmentSentenceBar{line-height:22px;padding:3px 0 6px;position:relative;z-index:2;zoom:1}
+.uiComposer .attachmentCloseBtn{position:absolute;right:2px;top:7px}
+.uiComposer .attachmentFrame{border:1px solid #b4bbcd;border-bottom-color:#ccc}
+.uiComposerHideMessageBox .attachmentFrame, .uiComposerHideInput .attachmentFrame{border-bottom-color:#b4bbcd}
+.uiComposerHideContent .attachmentFrame{display:none}
+.uiComposerHideStatusBox .inputContainer{display:none}
+.uiComposerOpen .focus_target{padding-bottom:10px}
+.uiComposerWhiteMessageBox .child_was_focused{border-bottom:1px solid #e9e9e9}
+.uiComposerHideMessageBox .child_was_focused{border-bottom:none}
+.uiComposer .showWhenOpen, .uiComposer .showOnceInteracted{display:none !important}
+.uiComposerOpen .showWhenOpen, .no_js .uiComposer .showWhenOpen, .uiComposerInteracted .showOnceInteracted, .uiComposer .child_was_focused .showOnceInteracted{display:block !important}
+.uiComposer .collapsedPostButtonContainer{text-align:right}
+.uiComposer .collapsedPostButton{margin-right:1px;padding:2px 16px}
+.uiComposer .child_was_focused .collapsedPostButton{display:none}
+.uiComposer .tallComposer .mentionsTextarea{height:34px}
+.fbEventGuestInviters{display:inline-block;position:relative;top:-1px}
+.fbEventGuestInviters .fbEventGuestInvitersIcon{position:relative;top:2px}
+.fbProfileBrowserListItem .fbEventGuestInviters .fbEventGuestInvitersIcon{top:3px}
+.fbEventsPage{border-right:1px solid #ccc}
+.fbEventHeader .fbEventHeadline{max-width:480px;margin-bottom:6px}
+.fbEventHeader .fbEventHeadlineLink{color:#333}
+.fbEventHeader .fbEventButtons{text-align:right}
+.fbEventHeader .fbEventButtons .uiSelector{text-align:left}
+.fbEventHeader .fbEventStatus{margin-top:5px;text-align:right}
+.fbEventHeader .fbEventJoinButton{padding-left:10px;padding-right:10px}
+.fbEventHeader .fbEventJoinButton .img, .fbEventHeader .fbEventInviteButton .img{margin-top:2px}
+.fbEventPhotoPlaceholder{height:43px}
+.fbEventPhoto{margin:1px 0 0 -1px}
+.eventProfilePicture{display:block;overflow:hidden;position:relative;width:180px}
+.eventProfilePicture .fbEventProfilePicSelector{background:transparent}
+.eventProfilePicture .edit_profilepicture{margin:1px 0 0 -1px}
+.eventProfilePicture:hover .edit_profilepicture{display:block}
+.eventProfilePicture .openToggler{display:block;opacity:1.0}
+.fbEventDivider{color:#333;margin-left:-20px}
+.fbEventContent{border-left:1px solid #ccc;padding-left:20px;width:513px}
+.fbEventInfo .uiInfoTable{width:450px}
+.fbEventInfo .fbEventTimeWeatherInfo{overflow:hidden;white-space:nowrap;width:513px}
+.fbEventInfo .fbEventTimeWeatherInfo .fbEventTimeWeatherInfoSection{height:36px}
+.fbEventLeftNav{float:left;padding:0 0 0 0;position:relative;width:179px;word-wrap:break-word}
+.fbEventInfo .uiInfoTable .label{white-space:nowrap;width:45px}
+.fbEventInfo .fbInfoIcon{text-align:center;width:30px}
+.fbEventInfo .fbEventTimeAdder{white-space:nowrap}
+.fbEventLocationInfo{width:463px}
+.fbLocationEditorContainer{position:relative;left:50%;height:0}
+.fbLocationEditor, .fbLocationEditorWithCity{border:1px solid rgba(0, 0, 0, .45);border-bottom-color:#666;-webkit-box-shadow:0 3px 8px rgba(0, 0, 0, .3);position:relative;left:-50%}
+.fbLocationEditor{top:30px}
+.fbLocationEditorWithCity{top:22px}
+.fbEventPermalink .fbPostsHeader{margin-left:-20px;padding-left:20px}
+.fbEventPermalink .fbEventComposer{margin-left:-20px;padding-left:20px;padding-top:12px}
+.fbEventPermalink .fbEventComposerBordered{border-top:1px solid #ccc;margin-top:15px}
+.fbEventWall{margin-top:12px}
+.fbEventWall .uiStream .uiStreamStory{margin-left:-20px;padding-left:20px}
+.fbEventWall .topborder, .fbEventWall .fbGroupsBoulderStream .fbGroupsSlimStreamHeader{margin-left:-20px}
+.fbEventGuests{margin-top:0}
+.fbEventGuests .selected{color:#333;cursor:default;text-decoration:none}
+.fbEventGuests .fbGuestDivider{overflow:hidden}
+.fbEventHeader.fbEditCover .coverEditor{padding:0;height:46px}
+.fbEventHeader.fbEditCover .coverImage .profilePicNotch{display:none}
+.fbEventHeader.fbEditCover .fbEventHeaderBlock{display:none}
+.fbEventHeader #fbProfileCover .coverWrap{height:264px}
+.fbEventHeader #fbProfileCover .coverImage{height:264px;margin-bottom:10px;width:714px}
+.fbEventHeader #fbProfileCover .coverNoImage{height:60px;background:white;border-bottom:1px dashed #c4cde0}
+.fbEventHeader #fbProfileCover .coverNoImage .fbProfileCoverPhotoSelector{top:20px}
+.fbEventHeader #fbProfileCover .fbProfileCoverPhotoSelector{right:1px;top:224px}
+.fbUpsellRoeButton{text-align:right}
+.fbEventSuggestionArea{padding-bottom:15px}
+.fbEventSuggestionAreaHeight{height:165px}
+.fbEventsNewDesignRHC .fbEventGuestSuggestion{height:32px;width:255px}
+.fbEventGuestSuggestion{height:32px;width:229px}
+.fbEventGuestSuggestion .fbEventSuggesteeName{white-space:nowrap;line-height:32px;vertical-align:middle;display:block;overflow:hidden;text-overflow:ellipsis}
+.fbEventGuestSuggestion .fbEventRemoveSuggestion{margin:11px 0}
+.fbEventGuests .fbEventRemoveAction{margin-top:3px}
+.fbEventPrivacy .fbEventPrivacyIcon{position:relative;top:1px;width:13px}
+.fbEventPrivacy .fbEventPrivacyShortIcon{position:relative;top:2px;width:13px}
+.fbEventGuestItem .fbEventGuestItemHover{visibility:hidden}
+.fbEventGuestItem:hover .fbEventGuestItemHover{visibility:visible}
+.fbEventAdUpsell{line-height:13px;width:244px}
+.fbEventCenter{text-align:center}
+.fbEventMemberLike{display:inline}
+.fbEventMemberComment{height:14px;margin-top:3px;width:315px}
+.fbEventJoinerGoingStoryVoiceBox{height:14px;margin-top:8px;width:260px}
+.fbEventDeleteSelector{margin-top:5px}
+._5w40.fbEventHeader{position:relative}
+._5w40.fbEventHeader #fbProfileCover{margin:0;width:100%}
+._5w40.fbEventHeader #fbProfileCover .coverImage{border-bottom:0;margin-bottom:0;width:100%}
+._5w40.fbEventHeader #fbProfileCover .fbProfileCoverPhotoSelector{top:180px}
+._5w40.fbEventHeader #fbProfileCover .coverImage:before{background:url(/rsrc.php/v2/yJ/r/UgNUNkKQar6.png) bottom left repeat-x;bottom:0;content:'';display:block;height:295px;left:0;position:absolute;width:100%;z-index:1}
+._3eld{bottom:0;display:block;left:0;position:absolute;width:100%;z-index:2}
+._5w40.fbEventHeader #fbProfileCover .coverImage.coverNoImage:before{border:1px solid #000;border-color:rgba(0, 0, 0, .25);border-top-color:rgba(0, 0, 0, .1);bottom:0;content:'';display:block;left:0;position:absolute;right:0;top:0;width:784px}
+._5w40.fbEventHeader #fbProfileCover .coverWrap, ._5w40.adminCoverImage.fbEventHeader #fbProfileCover .coverImage.coverNoImage, ._5w40.fbEventHeader #fbProfileCover .coverImage{height:295px}
+._5w40.fbEventHeader #fbProfileCover .coverImage.coverNoImage{height:160px}
+._5w40.adminCoverImage.fbEventHeader #fbProfileCover .coverImage.coverNoImage:before{height:293px}
+._5w40.fbEventHeader #fbProfileCover .coverImage.coverNoImage:before{height:158px}
+._5w40.fbEventHeader #fbProfileCover .fbProfileCoverPhotoSelector, ._5w40.fbEventHeader #fbProfileCover .coverNoImage .fbProfileCoverPhotoSelector, ._5w40.fbEventHeader #fbProfileCover .coverEditor{height:20px;position:absolute;right:16px;top:18px;z-index:3}
+._5w40.fbEventHeader.noCoverImage #fbProfileCover .coverImage:before{background:none;background-color:#d3d6db}
+._5v1l{color:#fff;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-size:24px;font-weight:500;max-width:720px;text-shadow:0 1px 8px rgba(0, 0, 0, .3)}
+._5v1l._11s4{font-size:20px}
+._5v1m{color:#fff;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-size:14px;font-weight:normal;max-width:494px;text-shadow:0 1px 8px rgba(0, 0, 0, .3)}
+._5w40.adminCoverImage.fbEventHeader ._5v1m{max-width:434px}
+._5v1m a{color:#fff;font-weight:bold}
+._5v1n{color:#fff;font-weight:bold}
+._5v1o{bottom:0;position:absolute;width:100%;z-index:2}
+._5v1p{bottom:16px;position:absolute;right:16px}
+._5v1p ._42fr, ._5v1p ._42fr:active, ._5v1p ._42fr:hover{color:#898f9c;opacity:1}
+._3ele{margin-right:6px}
+._3ele, ._51l, ._11vv._51xa{border:solid 1px rgba(0, 0, 0, .2);-webkit-border-radius:3px}
+._51l a, ._51l a:active, ._3ele a, ._3ele a:active{border:0;-webkit-border-radius:2px}
+._11vv._51xa > a, ._11vv._51xa > div a{border-bottom:0;border-right:0;border-top:0}
+._11vv._51xa > a:first-child, ._11vv._51xa > :first-child a{border-left:0;-webkit-border-radius:2px 0 0 2px}
+._11vv._51xa > a:last-child, ._11vv._51xa > :last-child a{-webkit-border-radius:0 2px 2px 0;border-right:0}
+._5v1q{margin-left:86px;max-width:440px;padding-bottom:10px;word-wrap:break-word}
+._5v1q.rfloat{float:left}
+._5v1r{background:none;border:2px solid rgba(255, 255, 255, .5);-webkit-border-radius:5px;bottom:14px;font-size:28px;font-weight:bold;left:16px;padding-bottom:8px;padding-top:6px;position:absolute;text-align:center;width:52px}
+.noCoverImage ._5v1r{background-color:#fff;border:1px solid #bcbec3;-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.2)}
+._5v1s{color:#fff;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-size:12px;font-weight:bold;margin:-2px auto 0 auto;text-shadow:0 1px 8px rgba(0, 0, 0, .3)}
+.noCoverImage ._5v1s{color:#bc696a}
+._5v1t{color:#fff;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-size:28px;font-weight:200;margin:-4px auto -6px auto;text-shadow:0 1px 8px rgba(0, 0, 0, .3)}
+._3elf{padding-right:3px}
+._3elg{padding-left:3px}
+._5gdb{white-space:nowrap}
+._5w40.fbEventHeader.noCoverImage ._5v1l{color:#333944;text-shadow:none}
+._5w40.fbEventHeader.noCoverImage ._5v1t{color:#555;text-shadow:none}
+._5w40.fbEventHeader.noCoverImage ._5v1s{color:#bc696a;text-shadow:none}
+._5w40.fbEventHeader.noCoverImage ._5v1m, ._5w40.fbEventHeader.noCoverImage ._5v1m a{color:#4e5665;text-shadow:none}
+.sp_38clud{background-image:url(/rsrc.php/v2/yS/r/yMFqvxeAD-o.png);background-size:auto;background-repeat:no-repeat;display:inline-block;height:14px;width:12px}
+.sx_78ee0f{width:13px;background-position:-13px 0}
+.selected .sx_78ee0f{background-position:0 0}
+.sx_557c29{background-position:-12px -15px}
+.selected .sx_557c29{background-position:0 -15px}
+.sx_9c23a5{height:12px;background-position:-12px -30px}
+.selected .sx_9c23a5{background-position:0 -30px}
+._5ugh{-webkit-background-clip:padding-box;-webkit-border-radius:2px;display:inline-block;font-family:'Helvetica Neue', Helvetica, sans-serif;font-size:10px;padding:0 3px;text-shadow:0 -1px 0 rgba(0, 0, 0, .24)}
+._5ugf{background-color:#fff;border:1px solid rgba(0, 0, 0, .16);color:#4e5665;height:13px;line-height:13px;margin:-1px}
+._5ugg{background-color:#dc0d17;background-image:-webkit-gradient(linear, center top, center bottom, from(#fa3c45), to(#dc0d17));background-image:-webkit-linear-gradient(top, #fa3c45 0%, #dc0d17 100%);border-bottom:1px solid rgba(0,0,0,.16);color:#fff;height:15px;line-height:15px;margin-bottom:-1px}
+._5ugi{padding-right:2px}
+.uiToolbarBordered{margin:0 -7px;padding:6px 7px 6px 1px}
+.uiToolbar .uiToolbarItem{float:left;margin-left:6px;vertical-align:top}
+.uiToolbarUnbordered .uiToolbarItem:first-child{margin-left:0}
+.uiToolbar .uiToolbarDivider{background:#d6d6d6;height:23px;width:1px}
+._5vv{color:#4e4c4c;line-height:19px}
+._4_ye{white-space:nowrap}
+._51y1{margin-left:7px;margin-right:7px}
+
+#bootloader_3e94l { height: 42px; }
+.bootloader_3e94l { display:block !important; }
