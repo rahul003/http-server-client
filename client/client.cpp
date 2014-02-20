@@ -30,6 +30,18 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+bool is_file_binary(char * filename)
+{
+    string file = filename;
+    string extension = file.substr(file.find_last_of(".")+1);
+    if(	extension=="png" || extension=="gif" || extension=="jpg"|| extension=="pdf"|| extension=="jpeg")
+		{
+
+			cout<<"true";return true;}
+	else
+		{cout<<"false"<<endl;return false;}
+}
+
 int main(int argc, char *argv[])
 {
 	int sockfd, numbytes;  
@@ -78,101 +90,114 @@ int main(int argc, char *argv[])
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),s, sizeof s);
 	printf("client: connecting to %s\n", s);
 
-	freeaddrinfo(servinfo); // all done with this structure
 
 	int optval = 1; //is 
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
-
+    freeaddrinfo(servinfo); // all done with this structure
     bzero(buf,MAXDATASIZE);
     char * filename = argv[4];
    
 
     if(!strcmp(argv[3],"GET") || !strcmp(argv[3],"get") )
     {	char * request;
-    	sprintf(buf, "GET /%s HTTP/1.1\r\nHost: %s\r\nAccept-Encoding:gzip,deflate,sdch\r\n\r\n",argv[4],argv[2]);
+    	sprintf(buf, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n",argv[4],argv[2]);
 	    n = write(sockfd,buf,MAXDATASIZE);
 		if (n < 0) 
 			fprintf(stderr, "ERROR writing to socket\n");
    	 	
-		ofstream myfile (filename, ios::out | ios::binary);
-   	 	int len;
-		while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
-		{	
-   	 		myfile.write(buf,len);
-   	 		bzero(buf,MAXDATASIZE);	
+
+   	 	char  statusheader[MAXDATASIZE];
+   	 	n = read(sockfd,statusheader, 15);
+		if (n < 0)
+			printf("ERROR reading from socket");
+
+		if(!strcmp(statusheader, "HTTP/1.1 404 NO"))				//Error message displayed if the file is not found
+		{
+		 	printf("404 NOT FOUND");
 		}
-   	 	myfile.close();
-    	if (n < 0) 
-         fprintf(stderr, "finish reading from socket\n");
-    	
+		else
+			printf("\n%s",statusheader);
+
+		if(strcmp(statusheader, "HTTP/1.1 200 OK")==0)	
+		{
+			ofstream myfile (filename, ios::out | ios::binary);
+	   	 	int len;
+	   	 	len = read(sockfd,buf,MAXDATASIZE);
+
+			while( (len = read(sockfd,buf,1)) >0)
+			{	
+	   	 		myfile.write(buf,len);
+	   	 		bzero(buf,1);	
+	   	 		//len = read(sockfd,buf,1);
+			}
+	   	 	myfile.close();
+    	}
    }
 
    if(!strcmp(argv[3],"PUT") || !strcmp(argv[3],"put") )
     {	
-    	//my put
-    	/*
-    	char* request = (char*) calloc(35, sizeof(char));
-    	sprintf(request, "PUT /%s HTTP/1.1\r\n\r\n",argv[4]);
-    	n = write(sockfd,request,MAXDATASIZE);
-		if (n < 0) 
-			fprintf(stderr, "ERROR writing to socket\n");
+  char getRequest[1024];
+		if(strcmp(argv[3],"PUT")==0)
+			sprintf(getRequest, "PUT /%s HTTP/1.0\r\nhost: %s\r\n\r\n",argv[4],argv[1]);//sprintf(getRequest, "GET / HTTP/1.0\nHOST: %s\n\n", argv[1]); // create a get request only for the IP
 
-		ifstream in (filename, ios::in);
-   	 	int temp=0;
-		in.read(buf,MAXDATASIZE);
-		int len=in.gcount();
-		while(len>0)
-		{
-			temp++;
-			cout<<buf<<endl;
-			cout<<send(sockfd, buf, len, 0)<<endl;
-			bzero(buf,MAXDATASIZE);	
-			in.read(buf,MAXDATASIZE);
-			len=in.gcount();
-		}
-   	 	in.close();
-    	if (n < 0) 
-         fprintf(stderr, "finish reading from socket\n");
-     	*/
+		else
+			{cout<<"Invalid request";
+			exit(0);}
 
 
-     	//harshits put
-     	char* request = (char*) calloc(100, sizeof(char));
-     	bzero(request,100);	
-    	sprintf(request, "PUT /%s HTTP/1.1\r\n\r\n",argv[4]);
-     	n = write(sockfd,request,MAXDATASIZE);
-		if (n < 0) 
-			fprintf(stderr, "ERROR writing to socket\n");
 
-     	cout<<"putting..";
-		char tosend[MAXDATASIZE];
-		bzero(tosend,MAXDATASIZE);	
-		FILE *fp;
-		char ch;
+    	int sent=send(sockfd,getRequest, strlen(getRequest),0);
+		cout<<sent;
+		cout<<"sent "<<strlen(getRequest)<<" ";
 
-		int n;
-		fp = fopen(filename,"r");
-		if(fp)
-		{				
-			do{
-				ch = fgetc(fp);
-				cout<<ch;
-				n = write(sockfd, &ch, 1);
-				if (n < 0) 
-					printf("ERROR writing to socket");						
-			}while( ch != EOF );
+    	cout<<"inside put"<<endl;
+    	if(is_file_binary(filename))
+    	{
+    		//char * sendingbuf = (char*) calloc(1, sizeof(char));
+    		char sendingchar[MAXDATASIZE];
+
+			ifstream myfile;
+			myfile.open(filename,ios::in | ios::binary);
+			while( numbytes = myfile.read(sendingchar,1) > 0)
+			{
+				n= send(sockfd, sendingchar, 1, 0);
+				if (n < 0)
+					printf("ERROR writing to socket");
+			}
+			myfile.close();
+    	}
+
+    	else
+    	{
+    
+    		FILE *fp;
+			char sendingchar;
+			fp = fopen(filename,"r");
+			
+			if(fp)
+			{
+				//cout<<"withing file writing"<<endl;
+				do{
+					sendingchar = fgetc(fp);
+					cout<<sendingchar;
+					if(sendingchar!=EOF)
+						n = write(sockfd, &sendingchar, 1);
+					//cout<<n;
+					if (n < 0) 
+						printf("ERROR writing to socket");			
+				}while( sendingchar != EOF );
 
 			fclose(fp);
-			cout<<"sent";
+			}
+			else
+			{
+				printf("File not found\n");
+			}
+    	}
 
-		}
-		else
-		{
-			printf("File not found\n");
-		}
-    	
    }
-
+   
+   	
 	close(sockfd);
 
 	return 0;
