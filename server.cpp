@@ -43,6 +43,56 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+int recv_request(int newsockfd, char *buffer)			//Recv_request to read the incoming request character by character in a buffer
+{
+	cout<<" hi enterin";
+	int end, n;
+	end = 0;
+	char input;
+	int pos = 0;
+	while(end != 4)
+	{
+		n = recv(newsockfd, &input, 1, 0);
+		if(n < 0)
+			{
+				printf("ERROR reading from socket");
+				return 0;
+			}
+		buffer[pos] = input;
+		pos++;
+		if(end == 0)
+		{
+		
+			if(input == '\r')
+				end = 1;
+		}
+		else if(end == 1)
+		{
+			if(input == '\n')
+				end = 2;
+			else
+				end = 0;
+		}			
+		else if(end == 2)
+		{
+			if(input == '\r')
+				end = 3;
+			else
+				end = 0;
+		}			
+		else if(end == 3)
+		{
+			if(input == '\n')
+				end = 4;
+			else
+				end = 0;
+		}			
+		bzero(&input, 1);
+		
+	}
+	buffer[pos] = '\0';
+	return 1;
+}
 int main(void)
 {
 	int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
@@ -130,17 +180,22 @@ int main(void)
 			close(sockfd); // child doesn't need the listener
 			cout<<"forked"<<endl;
 			bzero(buf,MAXDATASIZE);
-     		n = read(new_fd,buf,MAXDATASIZE);
+ 
+			n = recv_request(new_fd,buf);
+     		//n = read(new_fd,buf,MAXDATASIZE);
      		 if (n < 0) 
         		 error("ERROR reading from socket");
         	cout<<buf<<endl;
+
+        	cout<<"buf is:"<<buf<<endl;
+
         	char * tokens = strtok (buf,"\n");
-        	printf("%s",tokens);
+        	//printf("%s",tokens);
 	   		
         	char * request = strtok (buf," ");
         	char * filename = strtok (NULL," ");
         	filename++;
-        	printf("%s %s",request,filename);
+        	printf("request: %s, filename: %s\n",request,filename);
 
         	if(!strcmp(request,"GET"))
 		     {
@@ -182,19 +237,19 @@ int main(void)
 
 
         	if(!strcmp(request,"PUT") || !strcmp(request,"put") )
-		    {	cout<<"puit";
+		    {	//cout<<"put"<<endl;
 				ofstream myfile (filename, ios::out | ios::binary);
 		   	 	int temp=0;
 		   	 	int len;
 		   	 	bzero(buf,MAXDATASIZE);	
-				while( (len = read(sockfd,buf,MAXDATASIZE) )>0)
-				{	cout<<len;
+				while( (len = read(new_fd,buf,MAXDATASIZE) )>0)
+				{	//cout<<len;
 					temp++;
 					cout<<temp;
 		   	 		myfile.write(buf,len);
 		   	 		bzero(buf,MAXDATASIZE);	
 				}
-				cout<<len;
+				//cout<<"lenght is"<<len;
 				n = write(new_fd,"200 OK File Created\n",strlen("200 OK FIle Created\n"));
 		   	 	myfile.close();
 		    	//if (n < 0) 

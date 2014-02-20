@@ -109,6 +109,8 @@ int main(int argc, char *argv[])
 
    if(!strcmp(argv[3],"PUT") || !strcmp(argv[3],"put") )
     {	
+    	//my put
+    	/*
     	char* request = (char*) calloc(35, sizeof(char));
     	sprintf(request, "PUT /%s HTTP/1.1\r\n\r\n",argv[4]);
     	n = write(sockfd,request,MAXDATASIZE);
@@ -131,8 +133,43 @@ int main(int argc, char *argv[])
    	 	in.close();
     	if (n < 0) 
          fprintf(stderr, "finish reading from socket\n");
+     	*/
 
-     	
+
+     	//harshits put
+     	char* request = (char*) calloc(100, sizeof(char));
+     	bzero(request,100);	
+    	sprintf(request, "PUT /%s HTTP/1.1\r\n\r\n",argv[4]);
+     	n = write(sockfd,request,MAXDATASIZE);
+		if (n < 0) 
+			fprintf(stderr, "ERROR writing to socket\n");
+
+     	cout<<"putting..";
+		char tosend[MAXDATASIZE];
+		bzero(tosend,MAXDATASIZE);	
+		FILE *fp;
+		char ch;
+
+		int n;
+		fp = fopen(filename,"r");
+		if(fp)
+		{				
+			do{
+				ch = fgetc(fp);
+				cout<<ch;
+				n = write(sockfd, &ch, 1);
+				if (n < 0) 
+					printf("ERROR writing to socket");						
+			}while( ch != EOF );
+
+			fclose(fp);
+			cout<<"sent";
+
+		}
+		else
+		{
+			printf("File not found\n");
+		}
     	
    }
 
