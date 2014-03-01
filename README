@@ -1,0 +1,47 @@
+
+The Extracted Folder contains one directory, named as server and files called client.cpp and index.html. 
+
+The Server directory contains all the code and files corresponding to the server. Along with this, files folder contains cls.js which can be used for GET/PUT
+
+The Client code is present in the client.cpp file.
+
+For running the server we must execute the server.cpp file present in the server folder.
+For running the client we must compile and execute the client.cpp file present in the current folder.
+
+We can do all this compiling with makefile
+as: "make"
+
+
+The code works in the following manner: 
+
+The client can invoke either the local server or any of the intranet servers for either sending files to those servers or receiving files from them. 
+There is a local server to which the client can send/receive files, but for the intranet servers, files can only be received from them. 
+The client cannot upload a file on those servers.
+The requests sent here are http requests and have a specific format. For any other request than the valid http request, the
+server does not respond. The server is set around an infinite loop and needs to be interrupted
+with a terminal signal before it stops.
+
+There is also a makefile that compiles the entire code and generates all executable files. After running the makefile, the following executable files are created:
+1. client in the directory named Client
+2. server in the directory named Server
+
+Steps to execute server:
+1.. run make
+2. Then for running the executable we must must give the PORT no for the server
+3. The format of command is ./server portno
+Now server is started.
+
+For starting the client:
+1. run make
+2. To run the executable write command in the format-- ./client hostname port GET/PUT filename
+
+The hostname specifies the server name/IP address(preferred) to which the client has requested a connection from.
+The port specifies the port number through which a connection is requested. 
+GET/PUT stands for whether the client wants to upload a file to the server or wants to retrieve a file from the
+server. 
+The filename specifies the name of the file that is requested by the client.
+
+You can GET the  index.html or s.gif file  present in the server directory using GET request
+Similarly you can send the index.html file to the server directory usig PUT request
+
+Code handles binary as well as text files as well as folder/file kind of paths.
